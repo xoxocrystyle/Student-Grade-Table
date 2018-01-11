@@ -2,10 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="main.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -53,10 +53,10 @@
                        placeholder="Student Grade">
             </div>
 
-            <button type="button" class="btn btn-success" onclick="">Add</button>
-            <button type="button" class="btn btn-default" onclick="">Cancel</button>
+            <button type="button" class="btn btn-success add" onclick="add_button()">Add</button>
+            <button type="button" class="btn btn-default cancel" onclick="cancel_button()">Cancel</button>
         </div>
-        <div class="student-list-container col-xs-12 col-md-9">
+        <div class="student-list-container container-fluid col-xs-12 col-md-9">
             <table class="student-list table">
                 <thead>
                 <tr>
