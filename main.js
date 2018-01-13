@@ -1,7 +1,9 @@
-// $(document).ready(function (){
-//     add_button();
-//     cancel_button();
-// });
+$(document).ready(function (){
+    add_button();
+    cancel_button();
+    data_server_button();
+
+});
 var students = [];
 
 var input = ['studentName', 'studentCourse', 'studentGrade'];
@@ -22,14 +24,36 @@ function cancel_button() {
     cancel_form();
 }
 
-function add_student(name, course, grade) {
-    var student = {
-        name: name,
-        course: course,
-        grade: grade
+function data_server_button(){
+    var data_object = {
+        api_key: '6XRvvvcgRW'
     };
-    students.push(student);
-    add_student_data(student);
+    $.ajax({
+        data: data_object,
+        dataType: 'json',
+        method: 'post',
+        url: 'https://s-apis.learningfuze.com/sgt/get',
+        success: function(response){
+           console.log(response);
+         for (var i = 0; i < response.data.length; i++) {
+                    var student = {};
+                    student.name = response.data[i].name;
+                    student.course = response.data[i].course;
+                    student.grade = response.data[i].grade;
+                    student.idnumber = response.data[i].id;
+                    add_student(student);
+                    update_average(student);
+                    students.push(student);
+                }
+        calculate_average();
+        }
+    });
+}
+
+function add_student(studentObject) {
+
+    students.push(studentObject);
+    add_student_data(studentObject);
  
 
 }
@@ -72,6 +96,7 @@ function add_student_data(student) {
     var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', delete_button);
     add_row.append(add_name, add_course, add_grade, add_all);
     $('.student-list tbody').append(add_row);
+
 }
 
 function delete_button() {
