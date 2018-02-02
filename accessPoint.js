@@ -26,23 +26,6 @@ ws.get('/users', function(req, res){
     })
 });
 
-
-// ws.post('/users:id', function(){
-
-// })
-// ws.delete('/users', function(){
-
-// })
-// ws.put('/users', function(){
-
-// })
-// ws.get('/items', function(){
-
-// })
-// ws.post('/items', function(){
-
-// })
-
 ws.listen(3000, function(){
     console.log("Listening on port:3000");
 })

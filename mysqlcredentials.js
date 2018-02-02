@@ -2,7 +2,7 @@ const credentials = {
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'c12.17',
+    database: 'SGT',
     port: 8889
 }
 
