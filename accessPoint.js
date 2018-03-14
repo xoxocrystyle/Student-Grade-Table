@@ -19,6 +19,7 @@ ws.get('/users', function(req, res){
                 success: true,
                 data: rows
             }
+            console.log(output)
             const json_output = JSON.stringify(output);
             //res.send closes connection
             res.send(json_output);

@@ -34,7 +34,7 @@ function data_server_button(){
         dataType: 'json',
         method: 'get',
         url: 'users',
-        success: function(response){
+        success: function(response, data){
            console.log(response);
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
