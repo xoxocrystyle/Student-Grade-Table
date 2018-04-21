@@ -1,6 +1,4 @@
 $(document).ready(function (){
-    add_button();
-    cancel_button();
     data_server_button();
 
     $("#data").on('click', data_server_button);
@@ -35,7 +33,6 @@ function data_server_button(){
         method: 'get',
         url: 'users',
         success: function(response, data){
-           console.log(response);
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
                     student.name = response.data[i].name;

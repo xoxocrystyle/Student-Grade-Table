@@ -2,16 +2,16 @@ const express = require('express');
 const path = require('path');
 const mysql= require('mysql');
 const mysqlCredentials = require('./mysqlCredentials.js');
-const ws = express();
+const app = express();
 
 //creating an access point to db
 const db = mysql.createConnection(mysqlCredentials);
 
 //static files
-ws.use( express.static(path.join(__dirname, 'html')));
+app.use( express.static(path.join(__dirname, 'html')));
 
 //access to the user
-ws.get('/users', function(req, res){
+app.get('/users', function(req, res){
     db.connect(function(){
         db.query('SELECT * FROM students', function(error, rows, fields){
             //console.log(rows);
@@ -27,7 +27,7 @@ ws.get('/users', function(req, res){
     })
 });
 
-ws.listen(3000, function(){
+app.listen(3000, function(){
     console.log("Listening on port:3000");
 })
 
