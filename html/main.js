@@ -25,9 +25,6 @@ function cancel_button() {
 }
 
 function data_server_button(){
-    // var data_object = {
-    //     api_key: '6XRvvvcgRW'
-    // };
     $.ajax({
         dataType: 'json',
         method: 'get',

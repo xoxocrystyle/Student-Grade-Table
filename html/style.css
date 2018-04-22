@@ -1,0 +1,27 @@
+body {
+    background: url("./images/bg.png") fixed;
+    font-family: 'Nunito', sans-serif;
+}
+
+h1,
+h3 {
+    font-family: 'Nunito', sans-serif;
+    margin: 0px;
+}
+
+button {
+    margin-top: 15px;
+}
+
+.student-add-form {
+    display: none;
+}
+
+.student-list-container{
+    position: absolute;
+    top:13%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}

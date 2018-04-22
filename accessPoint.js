@@ -14,12 +14,10 @@ app.use( express.static(path.join(__dirname, 'html')));
 app.get('/users', function(req, res){
     db.connect(function(){
         db.query('SELECT * FROM students', function(error, rows, fields){
-            //console.log(rows);
             const output = {
                 success: true,
                 data: rows
             }
-            console.log(output)
             const json_output = JSON.stringify(output);
             //res.send closes connection
             res.send(json_output);
