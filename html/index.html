@@ -1,39 +1,42 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
-    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ" crossorigin="anonymous">   
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="./images/favicon.png"/>
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="main.js"></script>
 </head>
 <body>
 <div class="container-fluid">
+    <!-- TITLE  -->
     <div class="row text-center title">
         <div class="col-xs-12">
-            <!-- only show this element when the isnt on mobile -->
+            <!-- Desktop Title -->
             <section class="hidden-xs hidden-sm">
             <h1>Student Grade Table</h1>
             </section>
-            <!-- only show this element when the user gets to a mobile version -->
+            <!-- Mobile Title -->
             <section class="visible-xs visible-sm">
             <h3>Student Grade Table</h3>
             </section>
         </div>
     </div>
+    <!-- GRADE AVERAGE -->
     <div class="row text-center grade">
         <div class="col-xs-12">
-            <!-- only show this element when the isnt on mobile -->
+            <!-- Desktop Grade -->
             <section class="hidden-xs hidden-sm">
                 <h1>
                     <small>Grade Average : <span class="avgGrade label label-default">0</span></small>
                 </h1>
             </section>
-            <!-- only show this element when the user gets to a mobile version -->
+            <!-- Mobile Grade -->
             <section class="visible-xs visible-sm">
                 <h3>
                     <small>Grade Average : <span class="avgGrade label label-default">0</span></small>
@@ -41,8 +44,8 @@
             </section>
         </div>
     </div>
-    <div class="row text-center">
-        <!-- Split button -->
+    <!-- BUTTON NAVIGATION -->
+    <div class="row text-center buttons">
         <div class="btn-group">
                 <button type="button" class="btn btn-warning">Sort By</button>
                 <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,28 +53,43 @@
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Name</a></li>
-                  <li><a href="#">Course</a></li>
-                  <li><a href="#">Grade</a></li>
+                    <li class="dropdown dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown">Name</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="glyphicon glyphicon-sort-by-alphabet AthroughZ">Alphabetical: A-Z</a></li><br>
+                            <li><a class="glyphicon glyphicon-sort-by-alphabet-alt ZthroughA">Alphabetical: Z-A</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown">Course</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="glyphicon glyphicon-sort-by-alphabet">Alphabetical: A-Z</a></li><br>
+                            <li><a class="glyphicon glyphicon-sort-by-alphabet-alt">Alphabetical: Z-A</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-submenu"><a class="dropdown-toggle" data-toggle="dropdown">Grade</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="glyphicon glyphicon-sort-by-order lowest">Ascending: 0-9</a></li><br>
+                                <li><a class="glyphicon glyphicon-sort-by-order-alt highest">Descending: 9-0</a></li>
+                            </ul>
+                    </li>
                 </ul>
-              </div>
-        <button class="btn btn-info">
+        </div>
+        <button class="btn btn-info" data-toggle="modal" data-target="#myModal">
             Input Data
         </button>
-        </div>
     </div>
-    <div class="row">
-        <div class="student-add-form col-xs-12 col-md-3 pull-right">
+<!-- PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON  -->
+    <!-- <div class="row">
+        <div class="student-add-form col-xs-12 col-md-3 pull-right"> -->
             <!-- Add Student Input -->
-            <h4>Add Student</h4>
+            <!-- <h4>Add Student</h4>
             <div class="input-group form-group">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-user"></span>
                 </span>
                     <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
-                </div>
+                </div> -->
             <!-- Student Course Input -->
-            <div class="input-group form-group">
+            <!-- <div class="input-group form-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-list-alt"></span>
             </span>
@@ -86,13 +104,12 @@
                 <input type="text" class="form-control" name="studentGrade" id="studentGrade"
                        placeholder="Student Grade">
             </div>
-
-            <button type="button" class="btn btn-success add" onclick="add_button()">Add</button>
-            <button type="button" class="btn btn-default cancel" onclick="cancel_button()">Cancel</button>
-            <button type="button" class="btn btn-info getData" id="data" onclick="">Get Data</button>
-        </div>
-        <div class="student-list-container container-fluid col-xs-12 col-md-9">
-            <table class="student-list table rounded">
+        </div> -->
+<!-- PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON PLACEHOLDER WILL REMOVE SOON  -->
+<!-- STUDENT TABLE -->
+<div class="row">
+        <div class="student-list-container container-fluid col-xs-12 col-md-9 center-block">
+            <table class="student-list table" align="center">
                 <thead>
                 <tr>
                     <th>Student Name</th>
@@ -105,6 +122,44 @@
                 </tbody>
             </table>
         </div>
+    </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add a Student</h4>
+        </div>
+        <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" class="form-control validate" name="studentName" id="studentName">
+                    <label data-error="wrong" data-success="right">Name</label>
+                </div>
+                <div class="md-form mb-5">
+                    <i class="fa fa-envelope prefix grey-text"></i>
+                    <input type="text"  class="form-control validate" name="studentCourse" id="course">
+                    <label data-error="wrong" data-success="right">Course</label>
+                </div>
+
+                <div class="md-form mb-4">
+                    <i class="fa fa-lock prefix grey-text"></i>
+                    <input type="text" class="form-control validate" name="studentGrade" id="studentGrade">
+                    <label data-error="wrong" data-success="right">Grade</label>
+                </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success add" data-dismiss="modal" onclick="add_button()">Add</button>
+            <button type="button" class="btn btn-default cancel" onclick="cancel_button()">Clear</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+                          
     </div>
 
 </div>

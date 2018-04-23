@@ -1,10 +1,12 @@
-$(document).ready(function (){
-    data_server_button();
+$(document).ready(initializeApp);
 
+function initializeApp(){
     $("#data").on('click', data_server_button);
+    data_server_button();
+}
 
-});
 var students = [];
+console.log(students);
 
 var input = ['studentName', 'studentCourse', 'studentGrade'];
 
@@ -48,6 +50,7 @@ function data_server_button(){
 function add_student(studentObject) {
 
     students.push(studentObject);
+    console.log('AFTER PUSH', students)
     add_student_data(studentObject);
  
 
@@ -102,3 +105,36 @@ function delete_button() {
     update_average();
 
 }
+
+function sortGrades() {
+    var sortMode = $(this).attr('id');
+    switch (sortMode) {
+        case "lowest":
+            students.sort(function (a, b) {
+                if (parseInt(a.grade) < parseInt(b.grade)) return -1;
+                if (parseInt(a.grade) > parseInt(b.grade)) return 1;
+                return 0;
+            });
+            update_students(students);
+            break;
+        case "highest":
+            students.sort(function (a, b) {
+                if (parseInt(a.grade) > parseInt(b.grade)) return -1;
+                if (parseInt(a.grade) < parseInt(b.grade)) return 1;
+                return 0;
+            });
+            update_students(students);
+            break;
+    }
+}
+
+(function ($) {
+    $(document).ready(function () {
+        $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).parent().siblings().removeClass('open');
+            $(this).parent().toggleClass('open');
+        });
+    });
+})(jQuery);
