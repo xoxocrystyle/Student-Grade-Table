@@ -6,11 +6,11 @@ function initializeApp(){
 }
 
 var students = [];
-console.log(students);
 
 var input = ['studentName', 'studentCourse', 'studentGrade'];
 
 function add_button() {
+    debugger;
     console.log("Add button clicked");
     var name = $('#studentName').val();
     var course = $('#course').val();
@@ -47,14 +47,34 @@ function data_server_button(){
     });
 }
 
-function add_student(studentObject) {
+// function add_student(studentObject) {
 
-    students.push(studentObject);
-    console.log('AFTER PUSH', students)
-    add_student_data(studentObject);
+//     students.push(studentObject);
+//     console.log('AFTER PUSH', students)
+//     add_student_data(studentObject);
  
 
+// }
+
+function add_student(studentObj) {
+    console.log(studentObj);
+    add_student_data(studentObj);
+    $.ajax({
+        dataType: 'json',
+        method: 'post',
+        url: 'create',
+        success: function(response) {
+            console.log(response);
+            if (response.success) {
+                students.push(studentObj);
+                
+            } else {
+                console.log('Error posting');
+            }
+        }
+    });
 }
+
 
 function cancel_form() {
     $('#studentName').val('');
@@ -98,6 +118,7 @@ function add_student_data(student) {
 }
 
 function delete_button() {
+    debugger;
     var buttonRow = $(this).parent().attr('id');
     var delete_row = $(this).parent();
     students.splice(delete_row.index(), 1); 
@@ -106,27 +127,6 @@ function delete_button() {
 
 }
 
-function sortGrades() {
-    var sortMode = $(this).attr('id');
-    switch (sortMode) {
-        case "lowest":
-            students.sort(function (a, b) {
-                if (parseInt(a.grade) < parseInt(b.grade)) return -1;
-                if (parseInt(a.grade) > parseInt(b.grade)) return 1;
-                return 0;
-            });
-            update_students(students);
-            break;
-        case "highest":
-            students.sort(function (a, b) {
-                if (parseInt(a.grade) > parseInt(b.grade)) return -1;
-                if (parseInt(a.grade) < parseInt(b.grade)) return 1;
-                return 0;
-            });
-            update_students(students);
-            break;
-    }
-}
 
 (function ($) {
     $(document).ready(function () {
