@@ -12,10 +12,12 @@ var input = ['studentName', 'studentCourse', 'studentGrade'];
 function add_button() {
     debugger;
     console.log("Add button clicked");
-    var name = $('#studentName').val();
-    var course = $('#course').val();
-    var grade = $('#studentGrade').val();
-    add_student(name, course, grade);
+    var studentObj = {}
+    studentObj.name = $('#studentName').val();
+    studentObj.course = $('#course').val();
+    studentObj.grade = $('#studentGrade').val();
+    console.log(studentObj)
+    add_student(studentObj);
     calculate_average();
     update_average();
     cancel_form();
@@ -63,16 +65,24 @@ function add_student(studentObj) {
         dataType: 'json',
         method: 'post',
         url: 'create',
-        success: function(response) {
-            console.log(response);
-            if (response.success) {
-                students.push(studentObj);
-                
-            } else {
-                console.log('Error posting');
-            }
+        success: function(studentObj) {
+            console.log(studentObj);
+            console.log('success');
         }
     });
+}
+
+function add_student_data(student) {
+    var add_row = $('<tr>', {
+        id: student.idnumber
+    });
+    var add_name = $('<td>').text(student.name);
+    var add_course = $('<td>').text(student.course);
+    var add_grade = $('<td>').text(student.grade);
+    var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', delete_button);
+    add_row.append(add_name, add_course, add_grade, add_all);
+    $('.student-list tbody').append(add_row);
+
 }
 
 
@@ -101,20 +111,6 @@ function update_students() {
     for (var i = 0; i < students.length; i++) {
         students[i];
     }
-}
-
-
-function add_student_data(student) {
-    var add_row = $('<tr>', {
-        id: student.idnumber
-    });
-    var add_name = $('<td>').text(student.name);
-    var add_course = $('<td>').text(student.course);
-    var add_grade = $('<td>').text(student.grade);
-    var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', delete_button);
-    add_row.append(add_name, add_course, add_grade, add_all);
-    $('.student-list tbody').append(add_row);
-
 }
 
 function delete_button() {

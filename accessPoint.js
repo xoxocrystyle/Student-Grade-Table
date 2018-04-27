@@ -38,17 +38,17 @@ app.post('/create', function(req, res){
     let course = req.body.course;
     console.log(name, course, grade)
 
-        // const data = "INSERT INTO students (name, course, grade) VALUES ('"+name+"', '"+grade+"','"+course+"')";
-        // db.query(data, function(err, result){
-        //     if (err) throw err;
-        //     // const output = {
-        //     //     success: true,
-        //     //     data: rows
-        //     // }
-        //     // const json_output = JSON.stringify(output);
-        //     //res.send closes connection
-        //     res.end();
-        // });
+        const data = "INSERT INTO students (name, course, grade) VALUES ('"+name+"', '"+grade+"','"+course+"')";
+        db.query(data, function(err, result){
+            if (err) throw err;
+            // const output = {
+            //     success: true,
+            //     data: rows
+            // }
+            // const json_output = JSON.stringify(output);
+            //res.send closes connection
+            res.end();
+        });
     });
 
 app.listen(3000, function(){
