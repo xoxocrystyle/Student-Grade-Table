@@ -39,7 +39,6 @@ function data_server_button(){
                     student.course = response.data[i].course;
                     student.grade = response.data[i].grade;
                     student.idnumber = response.data[i].id;
-                    // add_student(student);
                     add_student_data(student);
                     update_average(student);
                     students.push(student);
@@ -49,17 +48,8 @@ function data_server_button(){
     });
 }
 
-// function add_student(studentObject) {
-
-//     students.push(studentObject);
-//     console.log('AFTER PUSH', students)
-//     add_student_data(studentObject);
- 
-
-// }
-
 function add_student(studentObj) {
-    console.log(studentObj);
+    add_student_data(studentObj);
     var data_object = {
         name: studentObj.name, 
         course: studentObj.course, 
@@ -78,30 +68,6 @@ function add_student(studentObj) {
     });
 }
 
-// function add_student(name, course, grade) {
-//     var studentObj = {
-//         name: name,
-//         course: course,
-//         grade: grade
-//     };
-//     students.push(studentObj);
-//     add_student_data(studentObj);
-//     var data_object = {
-//         name: studentObj.name, course: studentObj.course, grade: studentObj.grade
-//     };
-//     $.ajax({
-//         data: data_object,
-//         dataType: 'json',
-//         method: 'post',
-//         url: 'https://s-apis.learningfuze.com/sgt/create',
-//         success: function(response) {
-//             if (response.success) {
-//                 students.push(studentObj);
-//             }
-//         }
-//     });
-// }
-
 function add_student_data(student) {
     var add_row = $('<tr>', {
         id: student.idnumber
@@ -109,7 +75,8 @@ function add_student_data(student) {
     var add_name = $('<td>').text(student.name);
     var add_course = $('<td>').text(student.course);
     var add_grade = $('<td>').text(student.grade);
-    var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', delete_button);
+    var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', function(){
+        delete_button(student.idnumber)});
     add_row.append(add_name, add_course, add_grade, add_all);
     $('.student-list tbody').append(add_row);
 
@@ -143,14 +110,21 @@ function update_students() {
     }
 }
 
-function delete_button() {
-    debugger;
-    var buttonRow = $(this).parent().attr('id');
-    var delete_row = $(this).parent();
-    students.splice(delete_row.index(), 1); 
-    delete_row.remove();
-    update_average();
-
+function delete_button(id) {
+    var id = {id};
+    console.log(id)
+    $.ajax({
+        data: id,
+        method: 'delete',
+        url: 'delete',
+        success: function(){
+            var buttonRow = $(this).parent().attr('id');
+            var delete_row = $(this).parent();
+            students.splice(delete_row.index(), 1); 
+            delete_row.remove();
+            update_average();
+        }
+    });
 }
 
 

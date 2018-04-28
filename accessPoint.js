@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 //static files
 app.use( express.static(path.join(__dirname, 'html')));
 
-//access to users
+//access to students
 app.get('/users', function(req, res){
     db.connect(function(){
         db.query('SELECT * FROM students', function(error, rows, fields){
@@ -30,22 +30,36 @@ app.get('/users', function(req, res){
     })
 });
 
+//creating a student in database
 app.post('/create', function(req, res){
-    console.log('we made it fam');
-    console.log(req.body);
     let name = req.body.name;
     let grade = req.body.grade;
     let course = req.body.course;
+    console.log(req.body);
 
         const data = "INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?)";
         const inserts = ['students', 'name', 'course', 'grade', name, course, grade];
         const sql = mysql.format(data, inserts);
-        console.log("this is the query in our create endpoint" , sql);
         db.query(sql, function(err, result){
             if (err) throw err;
             res.end();
         });
     });
+
+
+app.delete('/delete', function(req, res){
+    console.log('REQ BODY', req.body);
+    let id = req.body.id; 
+    const data = "DELETE FROM ?? WHERE ?? . ?? = ?";
+    const inserts = ['students', 'students', 'id', id];
+    const sql = mysql.format(data, inserts);
+    console.log(sql);
+    db.query(sql, function(err, results){
+        if (err) throw err;
+        res.end();
+    })
+});
+
 
 app.listen(3000, function(){
     console.log("Listening on port:3000");
