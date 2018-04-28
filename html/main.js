@@ -10,7 +10,6 @@ var students = [];
 var input = ['studentName', 'studentCourse', 'studentGrade'];
 
 function add_button() {
-    debugger;
     console.log("Add button clicked");
     var studentObj = {}
     studentObj.name = $('#studentName').val();
@@ -40,7 +39,8 @@ function data_server_button(){
                     student.course = response.data[i].course;
                     student.grade = response.data[i].grade;
                     student.idnumber = response.data[i].id;
-                    add_student(student);
+                    // add_student(student);
+                    add_student_data(student);
                     update_average(student);
                     students.push(student);
                 }
@@ -60,17 +60,47 @@ function data_server_button(){
 
 function add_student(studentObj) {
     console.log(studentObj);
-    add_student_data(studentObj);
+    var data_object = {
+        name: studentObj.name, 
+        course: studentObj.course, 
+        grade: parseInt(studentObj.grade)
+    };
     $.ajax({
+        data: data_object,
         dataType: 'json',
         method: 'post',
         url: 'create',
-        success: function(studentObj) {
-            console.log(studentObj);
-            console.log('success');
+        success: function(response) {
+            if (response.success) {
+                students.push(studentObj);
+            }
         }
     });
 }
+
+// function add_student(name, course, grade) {
+//     var studentObj = {
+//         name: name,
+//         course: course,
+//         grade: grade
+//     };
+//     students.push(studentObj);
+//     add_student_data(studentObj);
+//     var data_object = {
+//         name: studentObj.name, course: studentObj.course, grade: studentObj.grade
+//     };
+//     $.ajax({
+//         data: data_object,
+//         dataType: 'json',
+//         method: 'post',
+//         url: 'https://s-apis.learningfuze.com/sgt/create',
+//         success: function(response) {
+//             if (response.success) {
+//                 students.push(studentObj);
+//             }
+//         }
+//     });
+// }
 
 function add_student_data(student) {
     var add_row = $('<tr>', {

@@ -36,17 +36,13 @@ app.post('/create', function(req, res){
     let name = req.body.name;
     let grade = req.body.grade;
     let course = req.body.course;
-    console.log(name, course, grade)
 
-        const data = "INSERT INTO students (name, course, grade) VALUES ('"+name+"', '"+grade+"','"+course+"')";
-        db.query(data, function(err, result){
+        const data = "INSERT INTO ?? (??, ??, ??) VALUES (?, ?, ?)";
+        const inserts = ['students', 'name', 'course', 'grade', name, course, grade];
+        const sql = mysql.format(data, inserts);
+        console.log("this is the query in our create endpoint" , sql);
+        db.query(sql, function(err, result){
             if (err) throw err;
-            // const output = {
-            //     success: true,
-            //     data: rows
-            // }
-            // const json_output = JSON.stringify(output);
-            //res.send closes connection
             res.end();
         });
     });
