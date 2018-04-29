@@ -111,7 +111,8 @@ function update_students() {
 }
 
 function delete_button() {
-    var buttonRow = $(this).parent().attr('id');
+    var bid = this.id; // button ID 
+   var buttonRow = $(this).closest('tr').attr('id'); 
     var delete_row = $(this).parent();
     students.splice(delete_row.index(), 1); 
     delete_row.remove();
@@ -126,12 +127,13 @@ function delete_button() {
 //         data: id,
 //         method: 'delete',
 //         url: 'delete',
-//         success: function(e){
-//             e.preventDefault();
-//             var buttonRow = $(this).parent().attr('id');
-//             var delete_row = $(this).closest('tr').remove();
-//             students.splice(delete_row.index(), 1); 
-//             delete_row.remove();
+//         success: function(){
+//             var buttonRow = $(this).closest('tr').attr('id');
+//             var id = this.id; 
+//             // var row = $(this).parent();
+//             // var delete_row = row.toString();
+//             students.splice(buttonRow.index(), 1); 
+//             buttonRow.remove();
 //             update_average();
 //         }
 //     });
