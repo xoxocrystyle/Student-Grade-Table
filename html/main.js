@@ -76,7 +76,7 @@ function add_student_data(student) {
     var add_course = $('<td>').text(student.course);
     var add_grade = $('<td>').text(student.grade);
     var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', function(){
-        delete_button(student.idnumber)});
+        delete_button()});
     add_row.append(add_name, add_course, add_grade, add_all);
     $('.student-list tbody').append(add_row);
 
@@ -110,23 +110,32 @@ function update_students() {
     }
 }
 
-function delete_button(id) {
-    var id = {id};
-    console.log(id)
-    $.ajax({
-        data: id,
-        method: 'delete',
-        url: 'delete',
-        success: function(e){
-            e.preventDefault();
-            var buttonRow = $(this).parent().attr('id');
-            var delete_row = $(this).closest('tr').remove();
-            students.splice(delete_row.index(), 1); 
-            delete_row.remove();
-            update_average();
-        }
-    });
+function delete_button() {
+    var buttonRow = $(this).parent().attr('id');
+    var delete_row = $(this).parent();
+    students.splice(delete_row.index(), 1); 
+    delete_row.remove();
+    update_average();
+
 }
+
+// function delete_button(id) {
+//     var id = {id};
+//     console.log(id)
+//     $.ajax({
+//         data: id,
+//         method: 'delete',
+//         url: 'delete',
+//         success: function(e){
+//             e.preventDefault();
+//             var buttonRow = $(this).parent().attr('id');
+//             var delete_row = $(this).closest('tr').remove();
+//             students.splice(delete_row.index(), 1); 
+//             delete_row.remove();
+//             update_average();
+//         }
+//     });
+// }
 
 
 (function ($) {
