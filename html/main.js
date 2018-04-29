@@ -111,6 +111,11 @@ function update_students() {
 }
 
 function delete_button(id) {
+    var buttonRow = $(this).parent().attr('id');
+    var delete_row = $(this).closest('tr').remove();
+    students.splice(delete_row.index(), 1); 
+    delete_row.remove();
+    update_average();
     var id = {id};
     console.log(id)
     $.ajax({
@@ -118,11 +123,7 @@ function delete_button(id) {
         method: 'delete',
         url: 'delete',
         success: function(){
-            var buttonRow = $(this).parent().attr('id');
-            var delete_row = $(this).parent();
-            students.splice(delete_row.index(), 1); 
-            delete_row.remove();
-            update_average();
+           
         }
     });
 }
@@ -138,3 +139,5 @@ function delete_button(id) {
         });
     });
 })(jQuery);
+
+console.log(students);
