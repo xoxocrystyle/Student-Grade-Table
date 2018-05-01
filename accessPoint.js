@@ -8,12 +8,13 @@ const app = express();
 //creating an access point to db
 const db = mysql.createConnection(mysqlCredentials);
 
+//Body parsing middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
-//static files
-app.use( express.static(path.join(__dirname, 'html')));
+//connect to static files
+app.use( express.static(path.join(__dirname, 'client')));
 
 //access to students
 app.get('/users', function(req, res){
@@ -46,7 +47,7 @@ app.post('/create', function(req, res){
         });
     });
 
-
+//deleting a student in the database
 app.delete('/delete', function(req, res){
     console.log('REQ BODY', req.body);
     let id = req.body.id; 
