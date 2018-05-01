@@ -1,8 +1,8 @@
 $(document).ready(initializeApp);
 
 function initializeApp(){
-    $("#data").on('click', data_server_button);
     data_server_button();
+    $('ul.dropdown-menu [data-toggle=dropdown]').on('click',dropdown)
 }
 
 var students = [];
@@ -33,6 +33,7 @@ function data_server_button(){
         method: 'get',
         url: 'users',
         success: function(response, data){
+            console.log(response)
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
                     student.name = response.data[i].name;
@@ -75,9 +76,8 @@ function add_student_data(student) {
     var add_name = $('<td>').text(student.name);
     var add_course = $('<td>').text(student.course);
     var add_grade = $('<td>').text(student.grade);
-    var add_all = $('<button>').addClass('btn btn-danger btn-sm').html('delete').on('click', function(){
-        delete_button()});
-    add_row.append(add_name, add_course, add_grade, add_all);
+    var delete_student= $('<button>').addClass('btn btn-danger btn-sm').attr('data-toggle','modal').attr('data-target', '#deleteModal').html('delete').on('click', function(){delete_confirmation(student)});
+    add_row.append(add_name, add_course, add_grade, delete_student);
     $('.student-list tbody').append(add_row);
 
 }
@@ -110,45 +110,47 @@ function update_students() {
     }
 }
 
-function delete_button() {
-    var bid = this.id; // button ID 
-   var buttonRow = $(this).closest('tr').attr('id'); 
-    var delete_row = $(this).parent();
-    students.splice(delete_row.index(), 1); 
-    delete_row.remove();
-    update_average();
-
+function delete_button(id) {
+    var id = {id};
+    $.ajax({
+        data: id,
+        method: 'delete',
+        url: 'delete',
+        success: function(){
+            // var buttonRow = $(this).closest('tr').attr('id'); 
+            var delete_row = $(this).parent().closest('tr');
+            students.splice(delete_row.index(), 1); 
+            delete_row.remove();
+            update_average();
+        }
+    });
 }
 
-// function delete_button(id) {
-//     var id = {id};
-//     console.log(id)
-//     $.ajax({
-//         data: id,
-//         method: 'delete',
-//         url: 'delete',
-//         success: function(){
-//             var buttonRow = $(this).closest('tr').attr('id');
-//             var id = this.id; 
-//             // var row = $(this).parent();
-//             // var delete_row = row.toString();
-//             students.splice(buttonRow.index(), 1); 
-//             buttonRow.remove();
-//             update_average();
-//         }
-//     });
-// }
+function delete_confirmation(student){
+    console.log(student);
+    var delete_name = $('<li>').text('Name: ' + student.name);
+    var delete_course = $('<li>').text('Course: ' + student.course);
+    var delete_grade = $('<li>').text('Grade: ' + student.grade);
+    $("#delete_student_info").append(delete_name, delete_course, delete_grade)
+    $("#deleteModal").on('click', '.yes', function(e){
+      delete_button(student.idnumber);
+      $('#delete_student_info > li').remove();
+      $('#deleteModal').modal('hide');
+    })
+    $("#deleteModal").on('click', '.no', function(e){
+        $('#delete_student_info > li').remove();
+        $('#deleteModal').modal('hide');
+    })
+}
 
-
-(function ($) {
-    $(document).ready(function () {
-        $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $(this).parent().siblings().removeClass('open');
-            $(this).parent().toggleClass('open');
-        });
+function dropdown(event){
+    $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $(this).parent().siblings().removeClass('open');
+        $(this).parent().toggleClass('open');
     });
-})(jQuery);
+}
 
-console.log(students);
+
+

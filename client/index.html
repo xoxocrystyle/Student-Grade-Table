@@ -73,7 +73,7 @@
                     </li>
                 </ul>
         </div>
-        <button class="btn btn-info" data-toggle="modal" data-target="#myModal">
+        <button class="btn btn-info" data-toggle="modal" data-target="#inputDataModal">
             Input Data
         </button>
     </div>
@@ -123,45 +123,61 @@
             </table>
         </div>
     </div>
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <!-- Input Student Modal -->
+  <div class="modal fade" id="inputDataModal" role="dialog">
     <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
+    <!-- Input Student Modal content-->
+    <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Add a Student</h4>
         </div>
         <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                    <i class="fa fa-user prefix grey-text"></i>
-                    <input type="text" class="form-control validate" name="name" id="studentName">
-                    <label data-error="wrong" data-success="right">Name</label>
-                </div>
-                <div class="md-form mb-5">
-                    <i class="fa fa-envelope prefix grey-text"></i>
-                    <input type="text"  class="form-control validate" name="course" id="course">
-                    <label data-error="wrong" data-success="right">Course</label>
-                </div>
-
-                <div class="md-form mb-4">
-                    <i class="fa fa-lock prefix grey-text"></i>
-                    <input type="text" class="form-control validate" name="grade" id="studentGrade">
-                    <label data-error="wrong" data-success="right">Grade</label>
-                </div>
-        <div class="modal-footer">
+            <div class="md-form mb-5">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" class="form-control validate" name="name" id="studentName">
+                <label data-error="wrong" data-success="right">Name</label>
+            </div>
+            <div class="md-form mb-5">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input type="text"  class="form-control validate" name="course" id="course">
+                <label data-error="wrong" data-success="right">Course</label>
+            </div>
+            <div class="md-form mb-4">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="text" class="form-control validate" name="grade" id="studentGrade">
+                <label data-error="wrong" data-success="right">Grade</label>
+            </div>
+         <div class="modal-footer">
             <button type="button" class="btn btn-success add" data-dismiss="modal" onclick="add_button()">Add</button>
             <button type="button" class="btn btn-default cancel" onclick="cancel_button()">Clear</button>
             <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Button Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+    <!-- Delete Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Are you sure you want to delete student's data? </h4>
+        </div>
+        <div class="modal-body">
+            <ul id="delete_student_info">
+            </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success yes">Yes</button>
+          <button type="button" class="btn btn-danger no" data-dismiss="modal">No</button>
         </div>
       </div>
       
     </div>
   </div>
-                          
-    </div>
-
+  
 </div>
 </body>
 </html>

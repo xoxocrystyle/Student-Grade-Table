@@ -55,6 +55,10 @@ button {
     border-left-color:#cccccc;
 }
 
+#delete_student_info{
+    list-style-type: none;
+}
+
 /* Large screens ----------- */
 @media only screen  and (min-width : 1824px) {
     /* Styles */
