@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //connect to static files
-app.use( express.static(path.join(__dirname, 'client')));
+app.use( express.static(path.join(__dirname, 'client'))); 
 
 //access to students
 app.get('/users', function(req, res){
