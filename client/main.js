@@ -2,10 +2,14 @@ $(document).ready(initializeApp);
 
 function initializeApp(){
     get_data();
+    click_handlers();
+}
+
+function click_handlers(){
     $("#AnameZ").click(sort_name_course);
     $("#ZnameA").click(sort_name_course);
-    $(".AcourseZ").click(sort_name_course);
-    $(".ZcourseA").click(sort_name_course);
+    $("#AcourseZ").click(sort_name_course);
+    $("#ZcourseA").click(sort_name_course);
     $("#lowest").click(sort_grades);
     $("#highest").click(sort_grades);
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click',dropdown)
@@ -13,21 +17,68 @@ function initializeApp(){
 
 var students = [];
 
-var input = ['studentName', 'studentCourse', 'studentGrade'];
-
 function add_button() {
-    console.log("Add button clicked");
     var studentObj = {}
     studentObj.name = $('#studentName').val();
     studentObj.course = $('#course').val();
     studentObj.grade = $('#studentGrade').val();
-    console.log(studentObj)
     add_student(studentObj);
+    $("tbody").empty();
+    get_data();
     calculate_average();
     update_average();
     cancel_form();
     update_students();
 }
+
+
+function add_student(studentObj) {
+    $.ajax({
+        data: studentObj,
+        dataType: 'json',
+        method: 'post',
+        url: 'create',
+        success: function(response) {
+            if (response.success) {
+                students.push(studentObj);
+            } 
+        },
+    });
+}
+
+function student_array_to_object(student){
+    $("tbody").empty();
+    let studentObj = {}
+        for(let i = 0; i < student.length; i++){
+            studentObj.name = student[i].name;
+            studentObj.course = student[i].course;
+            studentObj.grade = student[i].grade;
+            studentObj.idnumber = student[i].id;
+            add_student_data(studentObj);
+        } 
+        
+}
+
+function add_student_data(student) {
+    const add_row = $('<tr>', {
+        id: student.idnumber 
+    });
+    const add_name = $('<td>').text(student.name);
+    const add_course = $('<td>').text(student.course);
+    const add_grade = $('<td>').text(student.grade);
+    const delete_student= $('<button>')
+                        .addClass('btn btn-danger btn-sm delete')
+                        .attr('data-toggle','modal')
+                        .attr('data-target', '#deleteModal')
+                        .html('delete')
+                        .on('click', function(){
+                            delete_confirmation(student);
+                        });
+    add_row.append(add_name, add_course, add_grade, delete_student);
+    $('.student-list tbody').append(add_row);
+    $("tr").attr("id", "item");
+}
+
 
 function cancel_button() {
     console.log("Cancel button clicked")
@@ -56,53 +107,6 @@ function get_data(event){
     });
 }
 
-function add_student(studentObj) {
-    add_student_data(studentObj);
-    var data_object = {
-        name: studentObj.name, 
-        course: studentObj.course, 
-        grade: parseInt(studentObj.grade)
-    };
-    $.ajax({
-        data: data_object,
-        dataType: 'json',
-        method: 'post',
-        url: 'create',
-        success: function(response) {
-            if (response.success) {
-                students.push(studentObj);
-                $("tbody").empty();
-                get_data();
-            } 
-        },
-    });
-}
-
-function student_array_to_object(student){
-    $("tbody").empty();
-    let studentObj = {}
-        for(let i = 0; i < student.length; i++){
-            studentObj.name = student[i].name;
-            studentObj.course = student[i].course;
-            studentObj.grade = student[i].grade;
-            studentObj.idnumber = student[i].id;
-            add_student_data(studentObj);
-        } 
-        
-}
-
-function add_student_data(student) {
-    var add_row = $('<tr>', {
-        id: student.idnumber 
-    });
-    var add_name = $('<td>').text(student.name);
-    var add_course = $('<td>').text(student.course);
-    var add_grade = $('<td>').text(student.grade);
-    var delete_student= $('<button>').addClass('btn btn-danger btn-sm').attr('data-toggle','modal').attr('data-target', '#deleteModal').html('delete').on('click', function(){delete_confirmation(student)});
-    add_row.append(add_name, add_course, add_grade, delete_student);
-    $('.student-list tbody').append(add_row);
-    $("tr").attr("id", "item");
-}
 
 
 function cancel_form() {
@@ -180,7 +184,6 @@ function dropdown(event){
 
 
 function sort_name_course() {
-
     var sort_data = $(this).attr('id');
     switch (sort_data) {
         case "AnameZ":
