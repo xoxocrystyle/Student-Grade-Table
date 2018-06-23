@@ -13,18 +13,29 @@ button {
     margin-top: 15px;
 }
 
+.title{
+    margin-top: 1%;
+}
+
 .student-add-form {
     display: none;
 }
 
 .student-list-container{
+    background: rgba(255, 255, 255, .6);
     position: absolute;
-    top:20%;
+    top:25%;
     bottom: 0;
     left: 0;
     right: 0;
-    margin: auto;
+    margin-bottom: 2%;
     font-weight: 600;
+    overflow: auto;
+    table-layout: fixed;
+}
+
+th:last-child{
+    width: 10%;
 }
 
 .glyphicon{
@@ -55,16 +66,41 @@ button {
     border-left-color:#cccccc;
 }
 
-/* Large screens ----------- */
+#delete_student_info{
+    list-style-type: none;
+}
+
+.delete{
+    margin: 3% 0 0 5%;
+}
+
 @media only screen  and (min-width : 1824px) {
-    /* Styles */
     .student-list-container{
         position: absolute;
-        top:15%;
+        top:18%;
         bottom: 0;
         left: 0;
         right: 0;
         margin: auto;
         font-weight: 600;
     }
+
+
+}
+
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+    .student-list-container{
+        position: absolute;
+        top:13%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        font-weight: 600;
     }
+
+    .title{
+        margin-top: 2%;
+    }
+}
