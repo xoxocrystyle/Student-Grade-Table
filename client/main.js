@@ -107,35 +107,12 @@ function get_data(event){
     });
 }
 
-
-
 function cancel_form() {
     $('#studentName').val('');
     $('#course').val('');
     $('#studentGrade').val('');
 
 }
-
-function calculate_average() {
-    var total = 0;
-    for (var i = 0; i < students.length; i++) {
-        total += parseInt(students[i].grade);
-    }
-    return Math.round(total / students.length);
-}
-
-function update_average() {
-    var average = calculate_average();
-    $('.avgGrade').html(average);
-    update_students();
-}
-
-function update_students() {
-    for (var i = 0; i < students.length; i++) {
-        students[i];
-    }
-}
-
 function delete_button(id) {
     var id = {id};
     $.ajax({
@@ -143,7 +120,6 @@ function delete_button(id) {
         method: 'delete',
         url: 'delete',
         success: function(){
-            // var buttonRow = $(this).closest('tr').attr('id'); 
             var delete_row = $(this).parent().closest('tr');
             students.splice(delete_row.index(), 1); 
             update_average();
@@ -255,6 +231,27 @@ function sort_grades() {
             break;
     }
 }
+
+function calculate_average() {
+    var total = 0;
+    for (var i = 0; i < students.length; i++) {
+        total += parseInt(students[i].grade);
+    }
+    return Math.round(total / students.length);
+}
+
+function update_average() {
+    var average = calculate_average();
+    $('.avgGrade').html(average);
+    update_students();
+}
+
+function update_students() {
+    for (var i = 0; i < students.length; i++) {
+        students[i];
+    }
+}
+
 
 
 
