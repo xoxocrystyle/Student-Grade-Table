@@ -62,20 +62,9 @@ app.delete('/delete', function(req, res){
     })
 });
 
-// clean up database every week.
-// cron.schedule('* 12 * * 1', function(){
-//     console.log('running cron job');
-
-//     const data = "INSERT INTO `students` (`id`, `name`, `grade`, `course`) VALUES (8946, 'Zoe', 100, 'Javascript'), (8949, 'Chris', 100, 'Javascript'), (8950, 'Katya', 48, 'Javascript'), (8951, 'Liz', 80, 'Javascript'), (8952, 'Saphire', 89, 'Art'), (8953, 'Rose', 78, 'Art'), (8954, 'Daniel', 100, 'Art'), (8955, 'Tori, 50, 'Art'), (8956, 'Niko', 100, 'Poetry), (8957, 'Richard', 65, 'Philosophy'), (8958, 'Myles', 97, 'Music'), (8959, 'Kiran', 30, 'Poetry'), (8960, 'Jamie', 70, 'PHP')";
-
-//     db.query(data, function(err, result){
-//             if (err) throw err;
-//             });  
-// });
-
-
+//clean up database every day.
 const job1 = new cronJob.CronJob({
-    cronTime: '* * 12 * * 1-5',
+    cronTime: '59 * * * *',
     onTick: function() {
         console.log('running cron job');
 
