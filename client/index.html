@@ -73,7 +73,7 @@
                     </li>
                 </ul>
         </div>
-        <button class="btn btn-info" data-toggle="modal" data-target="#inputDataModal">
+        <button class="btn btn-info" id="inputData" data-toggle="modal" data-target="#inputDataModal">
             Input Data
         </button>
     </div>
@@ -95,7 +95,7 @@
         </div>
     </div>
   <!-- Input Student Modal -->
-  <div class="modal fade" id="inputDataModal" role="dialog">
+  <div class="modal fade" id="inputDataModal" role="form" data-toggle="validator" id="studentModal">
     <div class="modal-dialog">
     <!-- Input Student Modal content-->
     <div class="modal-content">
@@ -103,20 +103,22 @@
           <h4 class="modal-title">Add a Student</h4>
         </div>
         <div class="modal-body mx-3">
-            <div class="md-form mb-5">
-                <i class="fa fa-user prefix grey-text"></i>
-                <input type="text" class="form-control validate" name="name" id="studentName">
-                <label data-error="wrong" data-success="right">Name</label>
+            <div class="md-form mb-5 nameInput" id="">
+                <label>Name</label>
+                <input type="text" class="form-control validate sn" name="name" id="studentName">
+                <span id="nameBlock" class="help-block">Please specify a name.</span>
             </div>
-            <div class="md-form mb-5">
-                <i class="fa fa-envelope prefix grey-text"></i>
-                <input type="text"  class="form-control validate" name="course" id="course">
-                <label data-error="wrong" data-success="right">Course</label>
+
+            <div class="md-form mb-5 courseInput" id="">
+                <label>Course</label>
+                <input type="text"  class="form-control validate sc" name="course" id="studentCourse">
+                <span id="courseBlock" class="help-block">Please specify a course.</span>
             </div>
-            <div class="md-form mb-4">
-                <i class="fa fa-lock prefix grey-text"></i>
-                <input type="text" class="form-control validate" name="grade" id="studentGrade">
-                <label data-error="wrong" data-success="right">Grade</label>
+
+            <div class="md-form mb-4 gradeInput" id="">
+                <label>Grade</label>
+                <input type="text" class="form-control validate sg" name="grade" id="studentGrade">
+                <span id="gradeBlock" class="help-block">Grade must be 1-100.</span>
             </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-success add" data-dismiss="modal" onclick="add_button()">Add</button>
@@ -145,10 +147,8 @@
           <button type="button" class="btn btn-danger no" data-dismiss="modal">No</button>
         </div>
       </div>
-      
     </div>
   </div>
-  
 </div>
 </body>
 </html>
