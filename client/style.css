@@ -74,12 +74,11 @@ th:last-child{
     margin: 3% 0 0 5%;
 }
 
+
 @media only screen  and (min-width : 1824px) {
     .student-list-container{
         top:18%;
     }
-
-
 }
 
 

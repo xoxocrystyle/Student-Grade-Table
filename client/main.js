@@ -3,6 +3,7 @@ $(document).ready(initializeApp);
 function initializeApp(){
     get_data();
     click_handlers();
+    $("#nameBlock, #courseBlock, #gradeBlock").hide();
 }
 
 function click_handlers(){
@@ -12,7 +13,8 @@ function click_handlers(){
     $("#ZcourseA").click(sort_name_course);
     $("#lowest").click(sort_grades);
     $("#highest").click(sort_grades);
-    $('ul.dropdown-menu [data-toggle=dropdown]').on('click',dropdown)
+    $("#inputData").click(check_form);
+    $('ul.dropdown-menu [data-toggle=dropdown]').on('click',dropdown);
 }
 
 var students = [];
@@ -20,15 +22,13 @@ var students = [];
 function add_button() {
     var studentObj = {}
     studentObj.name = $('#studentName').val();
-    studentObj.course = $('#course').val();
+    studentObj.course = $('#studentCourse').val();
     studentObj.grade = $('#studentGrade').val();
     add_student(studentObj);
     $("tbody").empty();
     get_data();
     calculate_average();
     update_average();
-    cancel_form();
-    update_students();
 }
 
 
@@ -42,7 +42,10 @@ function add_student(studentObj) {
             if (response.success) {
                 students.push(studentObj);
             } 
-        },
+            if(response.error){
+                alert("There was an issue adding your input. Please check forms and try again.")
+            }
+        }
     });
 }
 
@@ -79,10 +82,44 @@ function add_student_data(student) {
     $("tr").attr("id", "item");
 }
 
+function check_form(){
+    $("#studentName").keyup(function(){
+        if($(this).val().length < 2){
+            $(".nameInput").addClass("has-error");
+		    $("#nameBlock").show();
+        } else {
+            $(".nameInput").removeClass("has-error");
+            $(".nameInput").addClass("has-success");
+            $("#nameBlock").hide();
+        }
+    });
+    $("#studentCourse").keyup(function(){
+        if($(this).val().length < 2){
+            $(".courseInput").addClass("has-error");
+		    $("#courseBlock").show();
+        } else {
+            $(".courseInput").removeClass("has-error");
+            $(".courseInput").addClass("has-success");
+            $("#courseBlock").hide();
+        }
+    });
+    $("#studentGrade").keyup(function(){
+        if($(this).val() === "" || $(this).val()> 100 || isNaN($(this).val())){
+            $(".gradeInput").addClass("has-error");
+		    $("#gradeBlock").show();
+        } else {
+            $(".gradeInput").removeClass("has-error");
+            $(".gradeInput").addClass("has-success");
+            $("#gradeBlock").hide();
+        }
+    });
+}
 
-function cancel_button() {
-    console.log("Cancel button clicked")
-    cancel_form();
+
+function cancel_form() {
+    $('#studentName').val('');
+    $('#studentCourse').val('');
+    $('#studentGrade').val('');
 }
 
 function get_data(event){
@@ -103,16 +140,13 @@ function get_data(event){
                     students.push(student);
                 }
         calculate_average();
+        },
+        error: function(){
+            alert('There was an issue retrieving your data. Please refresh the page.');
         }
     });
 }
 
-function cancel_form() {
-    $('#studentName').val('');
-    $('#course').val('');
-    $('#studentGrade').val('');
-
-}
 function delete_button(id) {
     var id = {id};
     $.ajax({
