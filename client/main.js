@@ -298,10 +298,3 @@ function update_students() {
         students[i];
     }
 }
-
-
-
-
-
-
-
