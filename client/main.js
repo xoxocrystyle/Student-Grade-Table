@@ -29,6 +29,7 @@ function add_button() {
     get_data();
     calculate_average();
     update_average();
+    cancel_form();
 }
 
 
@@ -83,10 +84,12 @@ function add_student_data(student) {
 }
 
 function check_form(){
+    $(".add").prop('disabled', true);
     $("#studentName").keyup(function(){
         if($(this).val().length < 2){
             $(".nameInput").addClass("has-error");
-		    $("#nameBlock").show();
+            $("#nameBlock").show();
+            $(".add").prop('disabled', true);
         } else {
             $(".nameInput").removeClass("has-error");
             $(".nameInput").addClass("has-success");
@@ -96,21 +99,24 @@ function check_form(){
     $("#studentCourse").keyup(function(){
         if($(this).val().length < 2){
             $(".courseInput").addClass("has-error");
-		    $("#courseBlock").show();
+            $("#courseBlock").show();
+            $(".add").prop('disabled', true);
         } else {
             $(".courseInput").removeClass("has-error");
             $(".courseInput").addClass("has-success");
             $("#courseBlock").hide();
-        }
+            }
     });
     $("#studentGrade").keyup(function(){
         if($(this).val() === "" || $(this).val()> 100 || isNaN($(this).val())){
             $(".gradeInput").addClass("has-error");
-		    $("#gradeBlock").show();
+            $("#gradeBlock").show();
+            $(".add").prop('disabled', true);
         } else {
             $(".gradeInput").removeClass("has-error");
             $(".gradeInput").addClass("has-success");
             $("#gradeBlock").hide();
+            $(".add").prop('disabled', false);
         }
     });
 }
@@ -120,6 +126,13 @@ function cancel_form() {
     $('#studentName').val('');
     $('#studentCourse').val('');
     $('#studentGrade').val('');
+
+    let value = $("#studentCourse").val().length;
+    if (value === 0) {
+        $(".add").prop('disabled', true);
+    } else {
+        $(".add").prop('disabled', true);
+    }
 }
 
 function get_data(event){
@@ -285,10 +298,3 @@ function update_students() {
         students[i];
     }
 }
-
-
-
-
-
-
-
