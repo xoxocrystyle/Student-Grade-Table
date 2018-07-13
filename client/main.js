@@ -1,39 +1,39 @@
 $(document).ready(initializeApp);
 
 function initializeApp(){
-    get_data();
-    click_handlers();
+   getData();
+    clickHandlers();
     $("#nameBlock, #courseBlock, #gradeBlock").hide();
 }
 
-function click_handlers(){
-    $("#AnameZ").click(sort_name_course);
-    $("#ZnameA").click(sort_name_course);
-    $("#AcourseZ").click(sort_name_course);
-    $("#ZcourseA").click(sort_name_course);
-    $("#lowest").click(sort_grades);
-    $("#highest").click(sort_grades);
-    $("#inputData").click(check_form);
+function clickHandlers(){
+    $("#AnameZ").click(sortNameCourse);
+    $("#ZnameA").click(sortNameCourse);
+    $("#AcourseZ").click(sortNameCourse);
+    $("#ZcourseA").click(sortNameCourse);
+    $("#lowest").click(sortGrades);
+    $("#highest").click(sortGrades);
+    $("#inputData").click(checkForm);
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click',dropdown);
 }
 
 var students = [];
 
-function add_button() {
+function addButton() {
     var studentObj = {}
     studentObj.name = $('#studentName').val();
     studentObj.course = $('#studentCourse').val();
     studentObj.grade = $('#studentGrade').val();
-    add_student(studentObj);
+    addStudent(studentObj);
     $("tbody").empty();
-    get_data();
-    calculate_average();
-    update_average();
-    cancel_form();
+    getData();
+    calculateAverage();
+    updateAverage();
+    cancelForm();
 }
 
 
-function add_student(studentObj) {
+function addStudent(studentObj) {
     $.ajax({
         data: studentObj,
         dataType: 'json',
@@ -50,40 +50,57 @@ function add_student(studentObj) {
     });
 }
 
-function student_array_to_object(student){
+function renderStudent(studentArr) {
     $("tbody").empty();
-    let studentObj = {}
-        for(let i = 0; i < student.length; i++){
-            studentObj.name = student[i].name;
-            studentObj.course = student[i].course;
-            studentObj.grade = student[i].grade;
-            studentObj.idnumber = student[i].id;
-            add_student_data(studentObj);
-        } 
+    for(let i = 0; i < studentArr.length; i++){
+        (function() {
+            let student = studentArr[i];
+            const addRow = $('<tr>', {
+                id: student.idnumber 
+            });
+            const addName = $('<td>').text(student.name);
+            const addCourse = $('<td>').text(student.course);
+            const addGrade = $('<td>').text(student.grade);
+            const deleteStudent= $('<button>')
+            .addClass('btn btn-danger btn-sm delete')
+            .attr('data-toggle','modal')
+            .attr('data-target', '#deleteModal')
+            .html('delete')
+            .on('click', (function(row){
+                return function() {
+                    deleteConfirmation(row)
+                };
+            })(student)
+        );
+            function deleteConfirmation(student){
+                var deleteName = $('<li>').text('Name: ' + student.name);
+                var deleteCourse = $('<li>').text('Course: ' + student.course);
+                var deleteGrade = $('<li>').text('Grade: ' + student.grade);
+                $("#deleteStudentInfo").append(deleteName, deleteCourse, deleteGrade)
+                $("#deleteModal").on('click', '.yes', function(e){
+                deleteButton(student.idnumber);
+                $('#deleteStudentInfo > li').remove();
+                $('#deleteModal').modal('hide');
+                $("tbody > #item").empty();
+               getData();
+                });
+                $("#deleteModal").on('click', '.no', function(e){
+                    $('#deleteStudentInfo > li').remove();
+                    $('#deleteModal').modal('hide');
+                })
         
+            }
+            addRow.append(addName, addCourse, addGrade, deleteStudent);
+            $('.student-list tbody').append(addRow);
+            $("tr").attr("id", "item");
+        })();
+    calculateAverage(studentArr);
+    }
 }
 
-function add_student_data(student) {
-    const add_row = $('<tr>', {
-        id: student.idnumber 
-    });
-    const add_name = $('<td>').text(student.name);
-    const add_course = $('<td>').text(student.course);
-    const add_grade = $('<td>').text(student.grade);
-    const delete_student= $('<button>')
-                        .addClass('btn btn-danger btn-sm delete')
-                        .attr('data-toggle','modal')
-                        .attr('data-target', '#deleteModal')
-                        .html('delete')
-                        .on('click', function(){
-                            delete_confirmation(student);
-                        });
-    add_row.append(add_name, add_course, add_grade, delete_student);
-    $('.student-list tbody').append(add_row);
-    $("tr").attr("id", "item");
-}
 
-function check_form(){
+
+function checkForm(){
     $(".add").prop('disabled', true);
     $("#studentName").keyup(function(){
         if($(this).val().length < 2){
@@ -122,7 +139,7 @@ function check_form(){
 }
 
 
-function cancel_form() {
+function cancelForm() {
     $('#studentName').val('');
     $('#studentCourse').val('');
     $('#studentGrade').val('');
@@ -135,24 +152,27 @@ function cancel_form() {
     }
 }
 
-function get_data(event){
+function getData(event){
+    console.log("im getting called!!")
     $.ajax({
         dataType: 'json',
         method: 'get',
         url: 'users',
         success: function(response, data){
             console.log(response)
+            students.length = 0;
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
                     student.name = response.data[i].name;
                     student.course = response.data[i].course;
                     student.grade = response.data[i].grade;
                     student.idnumber = response.data[i].id;
-                    add_student_data(student);
-                    update_average(student);
+                    updateAverage(student);
                     students.push(student);
+                    renderStudent(students);
+                    console.log('get data', students.length)
                 }
-        calculate_average();
+        calculateAverage();
         },
         error: function(){
             alert('There was an issue retrieving your data. Please refresh the page.');
@@ -160,40 +180,21 @@ function get_data(event){
     });
 }
 
-function delete_button(id) {
+function deleteButton(id) {
     var id = {id};
     $.ajax({
         data: id,
         method: 'delete',
         url: 'delete',
         success: function(){
-            var delete_row = $(this).parent().closest('tr');
-            students.splice(delete_row.index(), 1); 
-            update_average();
+            var deleteRow = $(this).parent().closest('tr');
+            students.splice(deleteRow.index(), 1); 
+            updateAverage();
         },
         error: function(){
             alert('There was an issue deleting your data. Please try again.');
         }
     });
-}
-
-function delete_confirmation(student){
-    var delete_name = $('<li>').text('Name: ' + student.name);
-    var delete_course = $('<li>').text('Course: ' + student.course);
-    var delete_grade = $('<li>').text('Grade: ' + student.grade);
-    $("#delete_student_info").append(delete_name, delete_course, delete_grade)
-    $("#deleteModal").on('click', '.yes', function(e){
-      delete_button(student.idnumber);
-      $('#delete_student_info > li').remove();
-      $('#deleteModal').modal('hide');
-      $("tbody > #item").empty();
-      get_data();
-    });
-    $("#deleteModal").on('click', '.no', function(e){
-        $('#delete_student_info > li').remove();
-        $('#deleteModal').modal('hide');
-    })
-
 }
 
 function dropdown(event){
@@ -206,9 +207,9 @@ function dropdown(event){
 }
 
 
-function sort_name_course() {
-    var sort_data = $(this).attr('id');
-    switch (sort_data) {
+function sortNameCourse() {
+    var sortData = $(this).attr('id');
+    switch (sortData) {
         case "AnameZ":
             students.sort(function (a, b) {
                 var nameA = a.name.toLowerCase();
@@ -218,8 +219,7 @@ function sort_name_course() {
                 return 0;
             });
             console.log("IN AZ", students);
-            debugger; 
-            student_array_to_object(students);
+            renderStudent(students);
             break;
         case "ZnameA":
         console.log("it works but it doesnt lel ")
@@ -231,7 +231,7 @@ function sort_name_course() {
                 return 0;
             });
             console.log('IN ZA', students);
-            student_array_to_object(students);
+            renderStudent(students);
             break;
         case "AcourseZ":
             students.sort(function (a, b) {
@@ -242,7 +242,7 @@ function sort_name_course() {
                 return 0;
             });
             console.log('ZA', students);
-            student_array_to_object(students);
+            renderStudent(students);
             break;
         case "ZcourseA":
             students.sort(function (a, b) {
@@ -252,21 +252,21 @@ function sort_name_course() {
                 if (courseA < courseB) return 1;
                 return 0;
             });
-            student_array_to_object(students);
+            renderStudent(students);
             break;
     }
 }
 
-function sort_grades() {
-    var sort_data = $(this).attr('id');
-    switch (sort_data) {
+function sortGrades() {
+    var sortData = $(this).attr('id');
+    switch (sortData) {
         case "lowest":
             students.sort(function (a, b) {
                 if (parseInt(a.grade) < parseInt(b.grade)) return -1;
                 if (parseInt(a.grade) > parseInt(b.grade)) return 1;
                 return 0;
             });
-            student_array_to_object(students);
+            renderStudent(students);
             break;
         case "highest":
             students.sort(function (a, b) {
@@ -274,12 +274,12 @@ function sort_grades() {
                 if (parseInt(a.grade) < parseInt(b.grade)) return 1;
                 return 0;
             });
-            student_array_to_object(students);
+            renderStudent(students);
             break;
     }
 }
 
-function calculate_average() {
+function calculateAverage() {
     var total = 0;
     for (var i = 0; i < students.length; i++) {
         total += parseInt(students[i].grade);
@@ -287,13 +287,13 @@ function calculate_average() {
     return Math.round(total / students.length);
 }
 
-function update_average() {
-    var average = calculate_average();
+function updateAverage() {
+    var average = calculateAverage();
     $('.avgGrade').html(average);
-    update_students();
+    upgradeStudents();
 }
 
-function update_students() {
+function upgradeStudents() {
     for (var i = 0; i < students.length; i++) {
         students[i];
     }
