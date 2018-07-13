@@ -50,38 +50,67 @@ function add_student(studentObj) {
     });
 }
 
-function student_array_to_object(student){
-    $("tbody").empty();
-    let studentObj = {}
-        for(let i = 0; i < student.length; i++){
-            studentObj.name = student[i].name;
-            studentObj.course = student[i].course;
-            studentObj.grade = student[i].grade;
-            studentObj.idnumber = student[i].id;
-            add_student_data(studentObj);
-        } 
+// function student_array_to_object(student){
+//     let studentObj = {}
+//         for(let i = 0; i < student.length; i++){
+//             studentObj.name = student[i].name;
+//             studentObj.course = student[i].course;
+//             studentObj.grade = student[i].grade;
+//             studentObj.idnumber = student[i].id;
+//             render_student(studentObj);
+//         } 
         
+// }
+
+function render_student(studentArr) {
+    $("tbody").empty();
+    for(let i = 0; i < studentArr.length; i++){
+        (function() {
+            let student = studentArr[i];
+            const add_row = $('<tr>', {
+                id: student.idnumber 
+            });
+            const add_name = $('<td>').text(student.name);
+            const add_course = $('<td>').text(student.course);
+            const add_grade = $('<td>').text(student.grade);
+            const delete_student= $('<button>')
+            .addClass('btn btn-danger btn-sm delete')
+            .attr('data-toggle','modal')
+            .attr('data-target', '#deleteModal')
+            .html('delete')
+            .on('click', (function(row){
+                return function() {
+                    delete_confirmation(row)
+                };
+            })(student)
+        );
+            function delete_confirmation(student){
+                var delete_name = $('<li>').text('Name: ' + student.name);
+                var delete_course = $('<li>').text('Course: ' + student.course);
+                var delete_grade = $('<li>').text('Grade: ' + student.grade);
+                $("#delete_student_info").append(delete_name, delete_course, delete_grade)
+                $("#deleteModal").on('click', '.yes', function(e){
+                delete_button(student.idnumber);
+                $('#delete_student_info > li').remove();
+                $('#deleteModal').modal('hide');
+                $("tbody > #item").empty();
+                get_data();
+                });
+                $("#deleteModal").on('click', '.no', function(e){
+                    $('#delete_student_info > li').remove();
+                    $('#deleteModal').modal('hide');
+                })
+        
+            }
+            add_row.append(add_name, add_course, add_grade, delete_student);
+            $('.student-list tbody').append(add_row);
+            $("tr").attr("id", "item");
+        })();
+    calculate_average(studentArr);
+    }
 }
 
-function add_student_data(student) {
-    const add_row = $('<tr>', {
-        id: student.idnumber 
-    });
-    const add_name = $('<td>').text(student.name);
-    const add_course = $('<td>').text(student.course);
-    const add_grade = $('<td>').text(student.grade);
-    const delete_student= $('<button>')
-                        .addClass('btn btn-danger btn-sm delete')
-                        .attr('data-toggle','modal')
-                        .attr('data-target', '#deleteModal')
-                        .html('delete')
-                        .on('click', function(){
-                            delete_confirmation(student);
-                        });
-    add_row.append(add_name, add_course, add_grade, delete_student);
-    $('.student-list tbody').append(add_row);
-    $("tr").attr("id", "item");
-}
+
 
 function check_form(){
     $(".add").prop('disabled', true);
@@ -136,21 +165,24 @@ function cancel_form() {
 }
 
 function get_data(event){
+    console.log("im getting called!!")
     $.ajax({
         dataType: 'json',
         method: 'get',
         url: 'users',
         success: function(response, data){
             console.log(response)
+            students.length = 0;
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
                     student.name = response.data[i].name;
                     student.course = response.data[i].course;
                     student.grade = response.data[i].grade;
                     student.idnumber = response.data[i].id;
-                    add_student_data(student);
                     update_average(student);
                     students.push(student);
+                    render_student(students);
+                    console.log('get data', students.length)
                 }
         calculate_average();
         },
@@ -177,24 +209,24 @@ function delete_button(id) {
     });
 }
 
-function delete_confirmation(student){
-    var delete_name = $('<li>').text('Name: ' + student.name);
-    var delete_course = $('<li>').text('Course: ' + student.course);
-    var delete_grade = $('<li>').text('Grade: ' + student.grade);
-    $("#delete_student_info").append(delete_name, delete_course, delete_grade)
-    $("#deleteModal").on('click', '.yes', function(e){
-      delete_button(student.idnumber);
-      $('#delete_student_info > li').remove();
-      $('#deleteModal').modal('hide');
-      $("tbody > #item").empty();
-      get_data();
-    });
-    $("#deleteModal").on('click', '.no', function(e){
-        $('#delete_student_info > li').remove();
-        $('#deleteModal').modal('hide');
-    })
+// function delete_confirmation(student){
+//     var delete_name = $('<li>').text('Name: ' + student.name);
+//     var delete_course = $('<li>').text('Course: ' + student.course);
+//     var delete_grade = $('<li>').text('Grade: ' + student.grade);
+//     $("#delete_student_info").append(delete_name, delete_course, delete_grade)
+//     $("#deleteModal").on('click', '.yes', function(e){
+//       delete_button(student.idnumber);
+//       $('#delete_student_info > li').remove();
+//       $('#deleteModal').modal('hide');
+//       $("tbody > #item").empty();
+//       get_data();
+//     });
+//     $("#deleteModal").on('click', '.no', function(e){
+//         $('#delete_student_info > li').remove();
+//         $('#deleteModal').modal('hide');
+//     })
 
-}
+// }
 
 function dropdown(event){
     $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
@@ -218,7 +250,6 @@ function sort_name_course() {
                 return 0;
             });
             console.log("IN AZ", students);
-            debugger; 
             student_array_to_object(students);
             break;
         case "ZnameA":
