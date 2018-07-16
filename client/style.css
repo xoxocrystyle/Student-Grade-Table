@@ -22,9 +22,9 @@ button {
 }
 
 .student-list-container{
+    position: fixed; 
     background: rgba(255, 255, 255, .6);
-    position: absolute;
-    top:25%;
+    top:23%;
     bottom: 0;
     left: 0;
     right: 0;
@@ -74,33 +74,36 @@ th:last-child{
     margin: 3% 0 0 5%;
 }
 
+
 @media only screen  and (min-width : 1824px) {
     .student-list-container{
-        position: absolute;
         top:18%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        font-weight: 600;
+
     }
-
-
 }
 
 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
     .student-list-container{
-        position: absolute;
         top:13%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        font-weight: 600;
     }
 
     .title{
         margin-top: 2%;
     }
 }
+
+@media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : landscape) and (-webkit-device-pixel-ratio: 2){
+    .student-list-container{
+        top:32%;
+    }
+    }
+
+@media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : portrait) and (-webkit-device-pixel-ratio: 2){
+    .student-list-container{
+        top:18%;
+    }
+        }
+
+
+      
