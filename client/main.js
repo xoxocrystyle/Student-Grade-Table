@@ -7,6 +7,8 @@ function initializeApp(){
 }
 
 function clickHandlers(){
+    $(".add").click(addButton);
+    $(".cancel").click(cancelForm);
     $("#AnameZ").click(sortNameCourse);
     $("#ZnameA").click(sortNameCourse);
     $("#AcourseZ").click(sortNameCourse);
@@ -77,7 +79,7 @@ function renderStudent(studentArr) {
                 var deleteCourse = $('<li>').text('Course: ' + student.course);
                 var deleteGrade = $('<li>').text('Grade: ' + student.grade);
                 $("#deleteStudentInfo").append(deleteName, deleteCourse, deleteGrade)
-                $("#deleteModal").on('click', '.yes', function(e){
+                $("#deleteModal").on('click', '.yes', function(){
                 deleteButton(student.idnumber);
                 $('#deleteStudentInfo > li').remove();
                 $('#deleteModal').modal('hide');
