@@ -155,13 +155,11 @@ function cancelForm() {
 }
 
 function getData(event){
-    console.log("im getting called!!")
     $.ajax({
         dataType: 'json',
         method: 'get',
         url: 'users',
         success: function(response, data){
-            console.log(response)
             students.length = 0;
          for (var i = 0; i < response.data.length; i++) {
                     var student = {};
@@ -172,7 +170,6 @@ function getData(event){
                     updateAverage(student);
                     students.push(student);
                     renderStudent(students);
-                    console.log('get data', students.length)
                 }
         calculateAverage();
         },
@@ -220,11 +217,9 @@ function sortNameCourse() {
                 if (nameA > nameB) return 1;
                 return 0;
             });
-            console.log("IN AZ", students);
             renderStudent(students);
             break;
         case "ZnameA":
-        console.log("it works but it doesnt lel ")
             students.sort(function (a, b) {
                 var nameA = a.name.toLowerCase();
                 var nameB = b.name.toLowerCase();
@@ -232,7 +227,6 @@ function sortNameCourse() {
                 if (nameA < nameB) return 1;
                 return 0;
             });
-            console.log('IN ZA', students);
             renderStudent(students);
             break;
         case "AcourseZ":
@@ -243,7 +237,6 @@ function sortNameCourse() {
                 if (courseA > courseB) return 1;
                 return 0;
             });
-            console.log('ZA', students);
             renderStudent(students);
             break;
         case "ZcourseA":
